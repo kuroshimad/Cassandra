@@ -1,0 +1,84 @@
+
+
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.PreparedStatement;
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Row;
+import com.datastax.driver.core.Session;
+import com.datastax.driver.core.exceptions.NoHostAvailableException;
+import java.io.IOException;
+import java.util.ArrayList;
+import javax.naming.ConfigurationException;
+import jdk.nashorn.internal.runtime.JSType;
+
+
+
+public class CQL_operations {
+    private static Cluster cluster;
+    private static Session session;
+    
+    public static Cluster connect(String node) {
+	return Cluster.builder()
+		.addContactPoint(node)
+		.build();
+    }
+    
+
+    public static void IniciateConnection() {
+	try{
+		cluster = connect("127.0.0.1");
+	} catch(NoHostAvailableException e) {
+		throw new RuntimeException(e);
+	}
+}
+        public static void IniciateSession(String KeySpaceName){
+            try{
+                session  = cluster.connect(KeySpaceName); 
+            } catch(NoHostAvailableException e) {
+		throw new RuntimeException(e);
+	}        
+        }
+            
+    public static void Create_keySpace(String KeySpaceName) {
+	session = cluster.connect();
+	session.execute("CREATE KEYSPACE " + KeySpaceName + " WITH replication = {'class': 'SimpleStrategy','replication_factor' : 1}");
+    }
+    public static void Eliminate_KeySpace(String KeySpaceName){
+	session.execute("DROP KEYSPACE " + KeySpaceName);
+
+    }
+    
+    public static void Eliminate_Data(String table, String Condition){
+        session.execute("DELETE FROM " + table + " WHERE " + Condition);
+    }
+    
+    public static void Counter(String table){
+        System.out.println(session.execute("SELECT COUNT(*) FROM " + table).all());
+    }
+    
+    public static void create_table(String nameOfTable, String[] nameOfColumns, String[] typeData, int primaryKey){
+        String cquery ="";
+        for (int i =0; i < nameOfColumns.length; i++){
+            cquery += nameOfColumns[i] + " " + typeData[i] + ",";
+        }
+        cquery +="PRIMARY KEY (" + nameOfColumns[primaryKey] + ")";
+        session.execute("CREATE TABLE " + nameOfTable + "(" + cquery + ")");
+    }
+    public static void delete_table(String TableName){
+        session.execute("DROP TABLE " + TableName);
+
+    }
+    
+
+    
+    
+    
+     
+    
+    public static void finalizingConnection() {
+	session.close();
+	cluster.close();
+    }
+    
+            
+}
