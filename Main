@@ -1,0 +1,50 @@
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Session;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Random;
+import java.io.IOException;
+
+public class Main {
+        
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) throws IOException{
+        long Initial_time = System.currentTimeMillis();
+        
+        CQL_operations.IniciateConnection();
+        //CQL_operations.Create_keySpace("Test");
+        CQL_operations.IniciateSession("Test");
+       /* String[] Name = {"id", "Name", "Sub_major", "Age"};
+        String[] type = {"int", "text", "text","int"};
+        CQL_operations.create_table("Student", Name, type, 0);*/
+      /*  String serverIP = "127.0.0.1";
+        String keyspace = "system";
+
+        Cluster cluster = Cluster.builder()
+            .addContactPoints(serverIP)
+            .build();
+        Session session = cluster.connect("Test");*/ 
+       /* session.execute("INSERT INTO " + "Student" + " (" + "id, Name, Sub_major, Age" + ") VALUES (" + "001, 'Daisuke', 'Comp. Chem.', 23" +")");
+        session.execute("INSERT INTO " + "Student" + " (" + "id, Name, Sub_major, Age" + ") VALUES (" + "002, 'Mitch', 'ITS', 22" +")");
+        session.execute("INSERT INTO " + "Student" + " (" + "id, Name, Sub_major, Age" + ") VALUES (" + "003, 'Alejandro', 'Img. Processing', 102" +")");
+        session.execute("INSERT INTO " + "Student" + " (" + "id, Name, Sub_major, Age" + ") VALUES (" + "004, 'Michael', 'ITS', 23" +")");
+        session.execute("INSERT INTO " + "Student" + " (" + "id, Name, Sub_major, Age" + ") VALUES (" + "005, 'Hardik', 'Comp. Sci.', 15" +")");
+        session.execute("INSERT INTO " + "Student" + " (" + "id, Name, Sub_major, Age" + ") VALUES (" + "006, 'Paul', 'Data Mining', 52" +")");
+        session.execute("INSERT INTO " + "Student" + " (" + "id, Name, Sub_major, Age" + ") VALUES (" + "007, 'Steven', 'Comp. Security', 52" +")");
+        session.execute("INSERT INTO " + "Student" + " (" + "id, Name, Sub_major, Age" + ") VALUES (" + "008, 'John', 'Economics', 42" +")");
+        session.execute("INSERT INTO " + "Student" + " (" + "id, Name, Sub_major, Age" + ") VALUES (" + "009, 'Smith', 'CIS', 55" +")");
+        */
+        
+       /* session.execute("UPDATE Test.Student SET Age = 23 WHERE ID =005");
+        session.execute("UPDATE Test.Student SET Age = 23 WHERE ID =007");
+        */
+        
+        
+        
+        CQL_operations.finalizingConnection();
+        System.out.println((System.currentTimeMillis()- Initial_time)/1000 + "sec");
+    }
+    
+}
